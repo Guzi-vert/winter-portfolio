@@ -11,7 +11,7 @@
   "html.format.extraLiners": " ",
   "files.eol": "\n",
   "jestrunner.disableCodeLens": true,
-  "workbench.sideBar.location": "right",
+  "workbench.sideBar.location": "left",
   "editor.minimap.enabled": false,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "editor.fontSize": 16,
