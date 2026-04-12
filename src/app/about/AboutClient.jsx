@@ -58,7 +58,7 @@ export default function AboutClient() {
                     About
                   </Link>
                   <Link
-                    href="/#projects"
+                    href="/projects"
                     className="hover:text-zinc-900 dark:hover:text-white transition-colors"
                   >
                     Projects
@@ -107,7 +107,7 @@ export default function AboutClient() {
                       About
                     </Link>
                     <Link
-                      href="/#projects"
+                      href="/projects"
                       className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -338,7 +338,7 @@ export default function AboutClient() {
               About
             </Link>
             <Link
-              href="/#projects"
+              href="/projects"
               className="hover:text-zinc-900 dark:hover:text-white transition-colors"
             >
               Projects

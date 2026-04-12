@@ -49,7 +49,7 @@ export default function HomeClient() {
                 <div className="flex items-center justify-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">
                   <Link href="/" className="text-emerald-500 dark:text-emerald-400 font-semibold">Home</Link>
                   <Link href="/about" className="hover:text-zinc-900 dark:hover:text-white transition-colors">About</Link>
-                  <Link href="#projects" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Projects</Link>
+                  <Link href="/projects" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Projects</Link>
                   <Link href="/uses" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Uses</Link>
                 </div>
               </div>
@@ -59,10 +59,14 @@ export default function HomeClient() {
             <div className="md:hidden">
               <div
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-700 shadow-md dark:shadow-xl rounded-3xl px-6 py-4 flex items-center justify-between cursor-pointer"
+                className="flex cursor-pointer items-center justify-between rounded-3xl border border-zinc-200 bg-white/90 px-6 py-4 shadow-md dark:border-zinc-700 dark:bg-zinc-900/90 dark:shadow-xl"
               >
-                <span className="font-semibold text-emerald-500 dark:text-emerald-400">Home</span>
-                <span className={`text-xl transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`}>
+                <span className="font-medium text-zinc-900 dark:text-white">Menu</span>
+                <span
+                  className={`text-lg transition-transform duration-300 ${
+                    isMenuOpen ? "rotate-180" : ""
+                  }`}
+                >
                   ▼
                 </span>
               </div>
@@ -73,7 +77,7 @@ export default function HomeClient() {
                   <div className="flex flex-col py-2 text-base font-medium text-zinc-700 dark:text-zinc-200">
                     <Link href="/" className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>
                     <Link href="/about" className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" onClick={() => setIsMenuOpen(false)}>About</Link>
-                    <Link href="#projects" className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" onClick={() => setIsMenuOpen(false)}>Projects</Link>
+                    <Link href="/projects" className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" onClick={() => setIsMenuOpen(false)}>Projects</Link>
                     <Link href="/uses" className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" onClick={() => setIsMenuOpen(false)}>Uses</Link>
                   </div>
                 </div>
@@ -250,9 +254,39 @@ export default function HomeClient() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 mt-12">
-        <div className="max-w-6xl mx-auto px-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
-          © 2026 Gyojun Gu. All rights reserved.
+      {/* Footer */}
+      <footer className="mt-12 border-t border-zinc-200 py-10 dark:border-zinc-800">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 px-5 text-sm text-zinc-500 dark:text-zinc-400 sm:px-6 md:flex-row">
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link
+              href="/"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="/projects"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Projects
+            </Link>
+            <Link
+              href="/uses"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Uses
+            </Link>
+          </div>
+
+          <div className="text-center md:text-right">
+            © 2026 Gyojun Gu. All rights reserved.
+          </div>
         </div>
       </footer>
     </div>
