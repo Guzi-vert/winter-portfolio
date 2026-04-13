@@ -1,38 +1,38 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function ContactClient() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState("dark");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error'
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
 
     setTheme(initialTheme);
-    if (initialTheme === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (initialTheme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
 
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem("theme", newTheme);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,48 +43,151 @@ export default function ContactClient() {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('https://formspree.io/f/mvzvngjk', {
-        method: 'POST',
+      const response = await fetch("https://formspree.io/f/mvzvngjk", {
+        method: "POST",
         body: formData,
         headers: {
-          'Accept': 'application/json',
+          Accept: "application/json",
         },
       });
 
       if (response.ok) {
-        setSubmitStatus('success');
+        setSubmitStatus("success");
         form.reset();
       } else {
-        setSubmitStatus('error');
+        setSubmitStatus("error");
       }
     } catch (error) {
-      console.error('Submit error:', error);
-      setSubmitStatus('error');
+      console.error("Submit error:", error);
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-200 py-20 transition-colors duration-300">
-      <div className="max-w-lg mx-auto px-6">
-        
-        {/* Theme Toggle Button */}
-        <div className="flex justify-end mb-8">
+    <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-200 transition-colors duration-300">
+      {/* Navigation */}
+      <div className="sticky top-6 z-50 px-6 pt-6">
+        <div className="max-w-md mx-auto flex items-center gap-3">
+          <div className="flex-1">
+            {/* Desktop Menu */}
+            <div className="hidden md:flex justify-center">
+              <div className="w-full rounded-3xl border border-zinc-200 bg-white/90 px-8 py-3.5 shadow-md backdrop-blur-xl dark:border-zinc-700 dark:bg-zinc-900/90 dark:shadow-xl">
+                <div className="flex items-center justify-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">
+                  <Link
+                    href="/"
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/projects"
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Projects
+                  </Link>
+                  <Link
+                    href="/uses"
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Uses
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="font-semibold text-emerald-500 dark:text-emerald-400"
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Menu */}
+            <div className="md:hidden">
+              <div
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="flex cursor-pointer items-center justify-between rounded-3xl border border-zinc-200 bg-white/90 px-6 py-4 shadow-md dark:border-zinc-700 dark:bg-zinc-900/90 dark:shadow-xl"
+              >
+                <span className="font-medium text-zinc-900 dark:text-white">Menu</span>
+                <span
+                  className={`text-lg transition-transform duration-300 ${
+                    isMenuOpen ? "rotate-180" : ""
+                  }`}
+                >
+                  ▼
+                </span>
+              </div>
+
+              {isMenuOpen && (
+                <div className="mt-2 overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900">
+                  <div className="flex flex-col py-2 text-base font-medium text-zinc-700 dark:text-zinc-200">
+                    <Link
+                      href="/"
+                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Home
+                    </Link>
+                    <Link
+                      href="/about"
+                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      About
+                    </Link>
+                    <Link
+                      href="/projects"
+                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Projects
+                    </Link>
+                    <Link
+                      href="/uses"
+                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Uses
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Contact
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-4 rounded-2xl bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-all text-2xl shadow-md"
+            className="flex-shrink-0 p-3.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-md hover:shadow-lg transition-all hover:scale-105"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === "dark" ? "🌙" : "☀️"}
           </button>
         </div>
+      </div>
 
+      {/* Main Content */}
+      <div className="max-w-lg mx-auto px-6 pt-16 pb-24">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold tracking-tight">Get in Touch</h1>
           <p className="mt-4 text-zinc-600 dark:text-zinc-400 text-lg">
-            Have a question or want to work together?<br />
+            Have a question or want to work together?
+            <br />
             I&apos;d love to hear from you!
           </p>
         </div>
@@ -92,7 +195,10 @@ export default function ContactClient() {
         {/* Contact Form with Formspree */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
+            >
               Name
             </label>
             <input
@@ -106,7 +212,10 @@ export default function ContactClient() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
+            >
               Email
             </label>
             <input
@@ -120,7 +229,10 @@ export default function ContactClient() {
           </div>
 
           <div>
-            <label htmlFor="subject" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label
+              htmlFor="subject"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
+            >
               Subject
             </label>
             <input
@@ -134,7 +246,10 @@ export default function ContactClient() {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+            <label
+              htmlFor="message"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
+            >
               Message
             </label>
             <textarea
@@ -152,25 +267,68 @@ export default function ContactClient() {
             disabled={isSubmitting}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 active:bg-blue-800 transition-all font-semibold text-lg py-4 rounded-2xl text-white shadow-lg shadow-blue-950/50"
           >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
+            {isSubmitting ? "Sending..." : "Send Message"}
           </button>
         </form>
 
         {/* Success Message */}
-        {submitStatus === 'success' && (
+        {submitStatus === "success" && (
           <div className="mt-8 text-center text-green-600 dark:text-green-400 font-medium text-lg">
-            ✅ Your message has been sent successfully!<br />
+            ✅ Your message has been sent successfully!
+            <br />
             I&apos;ll get back to you as soon as possible.
           </div>
         )}
 
         {/* Error Message */}
-        {submitStatus === 'error' && (
+        {submitStatus === "error" && (
           <div className="mt-8 text-center text-red-600 dark:text-red-400 font-medium text-lg">
             ⚠️ Failed to send your message. Please try again later.
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="mt-12 border-t border-zinc-200 py-10 dark:border-zinc-800">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 px-5 text-sm text-zinc-500 dark:text-zinc-400 sm:px-6 md:flex-row">
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link
+              href="/"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="/projects"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Projects
+            </Link>
+            <Link
+              href="/uses"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Uses
+            </Link>
+            <Link
+              href="/contact"
+              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+
+          <div className="text-center md:text-right">
+            © 2026 Gyojun Gu. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

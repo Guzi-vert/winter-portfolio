@@ -137,6 +137,7 @@ export default function ProjectsClient() {
                   >
                     Uses
                   </Link>
+                  <Link href="/contact" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Contact</Link>
                 </div>
               </div>
             </div>
