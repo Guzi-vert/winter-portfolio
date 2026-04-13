@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+function Panel({ children }) {
+  return (
+    <div className="rounded-[30px] border border-zinc-200/70 bg-white/70 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.06)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[0_10px_40px_rgba(0,0,0,0.28)]">
+      {children}
+    </div>
+  );
+}
+
 export default function ContactClient() {
   const [theme, setTheme] = useState("dark");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error'
+  const [submitStatus, setSubmitStatus] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -15,6 +23,7 @@ export default function ContactClient() {
     const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
 
     setTheme(initialTheme);
+
     if (initialTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
@@ -31,6 +40,7 @@ export default function ContactClient() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
     localStorage.setItem("theme", newTheme);
   };
 
@@ -46,9 +56,7 @@ export default function ContactClient() {
       const response = await fetch("https://formspree.io/f/mvzvngjk", {
         method: "POST",
         body: formData,
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
       });
 
       if (response.ok) {
@@ -57,8 +65,7 @@ export default function ContactClient() {
       } else {
         setSubmitStatus("error");
       }
-    } catch (error) {
-      console.error("Submit error:", error);
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -66,269 +73,122 @@ export default function ContactClient() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-200 transition-colors duration-300">
-      {/* Navigation */}
-      <div className="sticky top-6 z-50 px-6 pt-6">
-        <div className="max-w-md mx-auto flex items-center gap-3">
-          <div className="flex-1">
-            {/* Desktop Menu */}
-            <div className="hidden md:flex justify-center">
-              <div className="w-full rounded-3xl border border-zinc-200 bg-white/90 px-8 py-3.5 shadow-md backdrop-blur-xl dark:border-zinc-700 dark:bg-zinc-900/90 dark:shadow-xl">
-                <div className="flex items-center justify-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                  <Link
-                    href="/"
-                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/projects"
-                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-                  >
-                    Projects
-                  </Link>
-                  <Link
-                    href="/uses"
-                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-                  >
-                    Uses
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="font-semibold text-emerald-500 dark:text-emerald-400"
-                  >
-                    Contact
-                  </Link>
+    <div className="min-h-screen relative overflow-hidden bg-zinc-50 text-zinc-900 dark:bg-[#081120] dark:text-zinc-100 transition-colors duration-300">
+
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0 opacity-30 dark:opacity-20 [background-image:linear-gradient(to_right,#38bdf820_1px,transparent_1px),linear-gradient(to_bottom,#38bdf820_1px,transparent_1px)] [background-size:32px_32px]" />
+      <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
+
+      <div className="relative">
+
+        {/* NAV */}
+        <div className="sticky top-6 z-50 px-6 pt-6">
+          <div className="max-w-lg mx-auto flex items-center gap-3">
+            <div className="flex-1 hidden md:flex justify-center">
+              <div className="w-full rounded-full border border-zinc-200/80 bg-white/75 px-8 py-3.5 backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.04]">
+                <div className="flex justify-center gap-8 text-sm">
+                  <Link href="/">Home</Link>
+                  <Link href="/about">About</Link>
+                  <Link href="/projects">Projects</Link>
+                  <Link href="/uses">Uses</Link>
+                  <Link href="/contact" className="text-cyan-500 font-semibold">Contact</Link>
                 </div>
               </div>
             </div>
 
-            {/* Mobile Menu */}
-            <div className="md:hidden">
-              <div
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex cursor-pointer items-center justify-between rounded-3xl border border-zinc-200 bg-white/90 px-6 py-4 shadow-md dark:border-zinc-700 dark:bg-zinc-900/90 dark:shadow-xl"
+            <button onClick={toggleTheme} className="p-3 rounded-xl bg-white/70 dark:bg-white/[0.05]">
+              {theme === "dark" ? "🌙" : "☀️"}
+            </button>
+          </div>
+        </div>
+
+        {/* MAIN */}
+        <main className="max-w-3xl mx-auto px-6 pt-20 pb-24">
+
+          {/* HEADER */}
+          <div className="mb-14 text-center">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1 text-xs tracking-wide text-cyan-700 dark:bg-cyan-400/10 dark:text-cyan-300">
+              <span className="h-2 w-2 rounded-full bg-cyan-500" />
+              Get in touch
+            </div>
+
+            <h1 className="text-5xl font-bold">
+              Let’s build something together.
+            </h1>
+
+            <p className="mt-6 text-zinc-600 dark:text-zinc-400 text-lg">
+              Have a question, project idea, or just want to connect?
+              I’d love to hear from you.
+            </p>
+          </div>
+
+          {/* FORM */}
+          <Panel>
+            <form onSubmit={handleSubmit} className="space-y-6">
+
+              <input
+                name="name"
+                placeholder="Your name"
+                required
+                className="w-full bg-white/80 dark:bg-white/[0.04] border border-zinc-300 dark:border-white/10 rounded-xl px-5 py-4"
+              />
+
+              <input
+                name="email"
+                type="email"
+                placeholder="Your email"
+                required
+                className="w-full bg-white/80 dark:bg-white/[0.04] border border-zinc-300 dark:border-white/10 rounded-xl px-5 py-4"
+              />
+
+              <input
+                name="subject"
+                placeholder="Subject"
+                required
+                className="w-full bg-white/80 dark:bg-white/[0.04] border border-zinc-300 dark:border-white/10 rounded-xl px-5 py-4"
+              />
+
+              <textarea
+                name="message"
+                rows={6}
+                placeholder="Your message..."
+                required
+                className="w-full bg-white/80 dark:bg-white/[0.04] border border-zinc-300 dark:border-white/10 rounded-xl px-5 py-4"
+              />
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-cyan-400 to-violet-500 text-white font-semibold py-4 rounded-xl hover:opacity-90 transition"
               >
-                <span className="font-medium text-zinc-900 dark:text-white">Menu</span>
-                <span
-                  className={`text-lg transition-transform duration-300 ${
-                    isMenuOpen ? "rotate-180" : ""
-                  }`}
-                >
-                  ▼
-                </span>
-              </div>
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </button>
 
-              {isMenuOpen && (
-                <div className="mt-2 overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900">
-                  <div className="flex flex-col py-2 text-base font-medium text-zinc-700 dark:text-zinc-200">
-                    <Link
-                      href="/"
-                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Home
-                    </Link>
-                    <Link
-                      href="/about"
-                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      About
-                    </Link>
-                    <Link
-                      href="/projects"
-                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Projects
-                    </Link>
-                    <Link
-                      href="/uses"
-                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Uses
-                    </Link>
-                    <Link
-                      href="/contact"
-                      className="px-6 py-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Contact
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+            </form>
 
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className="flex-shrink-0 p-3.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-md hover:shadow-lg transition-all hover:scale-105"
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? "🌙" : "☀️"}
-          </button>
-        </div>
+            {/* Status */}
+            {submitStatus === "success" && (
+              <p className="mt-6 text-green-500 text-center">
+                Message sent successfully!
+              </p>
+            )}
+
+            {submitStatus === "error" && (
+              <p className="mt-6 text-red-500 text-center">
+                Something went wrong. Try again.
+              </p>
+            )}
+          </Panel>
+
+        </main>
+
+        {/* FOOTER */}
+        <footer className="border-t border-white/10 py-10 text-center text-sm text-zinc-500">
+          © 2026 Gyojun Gu
+        </footer>
+
       </div>
-
-      {/* Main Content */}
-      <div className="max-w-lg mx-auto px-6 pt-16 pb-24">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold tracking-tight">Get in Touch</h1>
-          <p className="mt-4 text-zinc-600 dark:text-zinc-400 text-lg">
-            Have a question or want to work together?
-            <br />
-            I&apos;d love to hear from you!
-          </p>
-        </div>
-
-        {/* Contact Form with Formspree */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-              placeholder="John Doe"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-              placeholder="your@email.com"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="subject"
-              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
-            >
-              Subject
-            </label>
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              required
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-              placeholder="Project inquiry / Collaboration"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="message"
-              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
-            >
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={7}
-              required
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-3xl px-6 py-4 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-y min-h-[160px]"
-              placeholder="Hello, I'd like to discuss..."
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 active:bg-blue-800 transition-all font-semibold text-lg py-4 rounded-2xl text-white shadow-lg shadow-blue-950/50"
-          >
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </button>
-        </form>
-
-        {/* Success Message */}
-        {submitStatus === "success" && (
-          <div className="mt-8 text-center text-green-600 dark:text-green-400 font-medium text-lg">
-            ✅ Your message has been sent successfully!
-            <br />
-            I&apos;ll get back to you as soon as possible.
-          </div>
-        )}
-
-        {/* Error Message */}
-        {submitStatus === "error" && (
-          <div className="mt-8 text-center text-red-600 dark:text-red-400 font-medium text-lg">
-            ⚠️ Failed to send your message. Please try again later.
-          </div>
-        )}
-      </div>
-
-      {/* Footer */}
-      <footer className="mt-12 border-t border-zinc-200 py-10 dark:border-zinc-800">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 px-5 text-sm text-zinc-500 dark:text-zinc-400 sm:px-6 md:flex-row">
-          <div className="flex flex-wrap justify-center gap-6">
-            <Link
-              href="/"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/about"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              href="/projects"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Projects
-            </Link>
-            <Link
-              href="/uses"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Uses
-            </Link>
-            <Link
-              href="/contact"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Contact
-            </Link>
-          </div>
-
-          <div className="text-center md:text-right">
-            © 2026 Gyojun Gu. All rights reserved.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
