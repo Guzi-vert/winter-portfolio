@@ -143,7 +143,7 @@ export default function AboutClient() {
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Left: text content */}
           <div className="order-2 space-y-8 lg:order-1">
-            <h1 className="max-w-xl text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
+            <h1 className="max-w-xl text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-5xl">
               I’m Gyojun Gu. I study computer science and build my future through
               code.
             </h1>
